@@ -32,7 +32,7 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMapLon
     private String textt;
     private Set<String> marker_s;
     private Set<String> markerr_s;
-    private double i=0;
+    private double i=0,j=1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,21 +50,7 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMapLon
         setUpMapIfNeeded();
     }
 
-    /**
-     * Sets up the map if it is possible to do so (i.e., the Google Play services APK is correctly
-     * installed) and the map has not already been instantiated.. This will ensure that we only ever
-     * call {@link #setUpMap()} once when {@link #mMap} is not null.
-     * <p/>
-     * If it isn't installed {@link SupportMapFragment} (and
-     * {@link com.google.android.gms.maps.MapView MapView}) will show a prompt for the user to
-     * install/update the Google Play services APK on their device.
-     * <p/>
-     * A user can return to this FragmentActivity after following the prompt and correctly
-     * installing/updating/enabling the Google Play services. Since the FragmentActivity may not
-     * have been completely destroyed during this process (it is likely that it would only be
-     * stopped or paused), {@link #onCreate(Bundle)} may not be called again so we should call this
-     * method in {@link #onResume()} to guarantee that it will be called.
-     */
+
     private void setUpMapIfNeeded() {
         // Do a null check to confirm that we have not already instantiated the map.
         if (mMap == null) {
@@ -79,9 +65,6 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMapLon
             }
         }
     }
-
-
-
     private void setUpMap() {
         customMarkers();
 
@@ -102,22 +85,7 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMapLon
 
 
     }
-    /*@Override
-    public void onLocationChanged(Location location) {
-        double latitude = location.getLatitude();
 
-        // Getting longitude of the current location
-        double longitude = location.getLongitude();
-
-        // Creating a LatLng object for the current location
-        LatLng latLng = new LatLng(latitude, longitude);
-
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-
-        // Zoom in, animating the camera.
-        mMap.animateCamera(CameraUpdateFactory.zoomTo(14), 2000, null);
-
-    }*/
     public void customMarkers(){
         Marker pos = mMap.addMarker(new MarkerOptions().position(new LatLng(50.98,11.32)).title("Weimar").snippet("BAuhaus Unversity"));
         Marker poss = mMap.addMarker(new MarkerOptions().position(new LatLng(50.1155200,8.6841700)).title("FRankfurt").snippet("Frankfurt University"));
@@ -131,11 +99,17 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMapLon
     public void onMapLongClick(LatLng point) {
 
         textt = texxt.getText().toString();
-        Marker clicke = mMap.addMarker(new MarkerOptions().position(point).title(texxt.getText().toString()).snippet(textt));
-        markerSets(clicke);
-        markerSSets(clicke);
-        //circle_drawing( markerr_s);
-        texxt.setText("");
+        if (textt.isEmpty()){
+            Toast.makeText(getApplicationContext(),"Enter the MARKER Name first",Toast.LENGTH_LONG).show();
+        }
+        else {
+            Marker clicke = mMap.addMarker(new MarkerOptions().position(point).title(textt).snippet("NewMarker" + j));
+            markerSets(clicke);
+            markerSSets(clicke);
+            j++;
+            //circle_drawing( markerr_s);
+            texxt.setText("");
+        }
     }
     @Override
     public boolean onMarkerClick (Marker marker){
